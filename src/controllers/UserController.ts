@@ -1,32 +1,35 @@
 // models
 import User from '../models/user';
 
-const createUser = async (req) => {
+// utils
+import controllerHandler from '../utils/controllerHandler';
+
+const createUser = controllerHandler(async (req) => {
   const result = await User.create(req.body);
 
   return result;
-};
+});
 
-const updateUser = async (req) => {
+const updateUser = controllerHandler(async (req) => {
   const { id } = req.params;
 
   const result = await User.update(id, req.body);
   return result;
-};
+});
 
-const getUserById = async (req) => {
+const getUserById = controllerHandler(async (req) => {
   const { id } = req.params;
 
   const result = await User.findByPk(id);
   return result;
-};
+});
 
-const deleteUserById = async (req) => {
+const deleteUserById = controllerHandler(async (req) => {
   const { id } = req.params;
 
   const result = await User.destroy(id);
   return result;
-};
+});
 
 export {
   getUserById,
