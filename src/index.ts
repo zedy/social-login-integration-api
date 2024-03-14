@@ -10,8 +10,8 @@ import responseTime from 'response-time';
 import 'dotenv/config';
 import morgan from 'morgan';
 
-// configs
-import passport from './middleware/config/passport';
+// models
+import User from './models/user';
 
 // Initialize Express
 const app = express();
@@ -71,13 +71,10 @@ app.use(express.urlencoded({ extended: false, limit: '100000mb' }));
 
 // Initialize authentication middleware
 app.set('trust proxy', 1);
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
-// List of all API routes
-// test route
-app.get('/', (req, res) => {
-  res.send('hello world');
-});
+// List of all models
+User.sync();
 
 // Start WebSocket
 const server = http.createServer(app);

@@ -4,7 +4,7 @@
   "private": true,
   "description": "API server for the Viaggiare social login integration project",
   "main": "dist/index.js",
-  "dependencies": {   
+  "dependencies": {
     "amqplib": "^0.8.0",
     "api": "^4.4.0",
     "base-64": "^1.0.0",
@@ -22,6 +22,7 @@
     "lodash": "^4.17.21",
     "mime": "^3.0.0",
     "morgan": "^1.10.0",
+    "mysql2": "^3.9.2",
     "ndb": "^0.2.4",
     "nonce": "^1.0.4",
     "passport": "^0.6.0",
@@ -29,6 +30,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.88.2",
     "response-time": "^2.3.2",
+    "sequelize": "^6.37.1",
     "utf8": "^3.0.0",
     "winston": "^3.8.2",
     "ws": "^8.3.0"
