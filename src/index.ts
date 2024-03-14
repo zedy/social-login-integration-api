@@ -11,7 +11,10 @@ import 'dotenv/config';
 import morgan from 'morgan';
 
 // models
-import User from './models/user';
+import UserModel from './models/user';
+
+// routes
+import userRoute from './routes/user';
 
 // Initialize Express
 const app = express();
@@ -74,7 +77,11 @@ app.set('trust proxy', 1);
 // app.use(passport.initialize());
 
 // List of all models
-User.sync();
+UserModel.sync();
+
+// List of all API routes
+// User routes
+app.use('/api/user', userRoute);
 
 // Start WebSocket
 const server = http.createServer(app);
