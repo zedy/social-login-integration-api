@@ -4,7 +4,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   host: process.env.DB_HOST,
   dialect: 'mysql',
   port: Number(process.env.DB_PORT),
-  logging: (...msg) => console.log(msg),
+  logging: false, // (...msg) => console.log(msg),
 });
 
 export default sequelize;

@@ -3,11 +3,35 @@ import User from '../models/user';
 
 // utils
 import controllerHandler from '../utils/controllerHandler';
+import { getToken } from '../utils/jwt';
 
 const createUser = controllerHandler(async (req) => {
-  const result = await User.create(req.body);
+  const [user, created] = await User.findOrCreate({
+    where: { email: req.body.email },
+    defaults: {
+      salt: '',
+      ...req.body,
+    },
+  });
 
-  return result;
+  const token = getToken({
+    id: user.getDataValue('id'),
+    email: user.getDataValue('email'),
+  });
+
+  if (!created) {
+    return {
+      created,
+      message: 'Email already registered.',
+    };
+  }
+
+  return {
+    created,
+    message: 'User created successfully.',
+    token,
+    user,
+  };
 });
 
 const updateUser = controllerHandler(async (req) => {
