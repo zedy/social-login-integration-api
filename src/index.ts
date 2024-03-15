@@ -15,6 +15,7 @@ import UserModel from './models/user';
 
 // routes
 import userRoute from './routes/user';
+import authRoute from './routes/authentication';
 
 // Initialize Express
 const app = express();
@@ -82,6 +83,9 @@ UserModel.sync();
 // List of all API routes
 // User routes
 app.use('/api/user', userRoute);
+
+// Auth routes
+app.use('/api/auth', authRoute);
 
 // Start WebSocket
 const server = http.createServer(app);

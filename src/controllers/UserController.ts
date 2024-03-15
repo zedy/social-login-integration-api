@@ -55,7 +55,13 @@ const deleteUserById = controllerHandler(async (req) => {
   return result;
 });
 
+const findUser = async (query) => {
+  const result = await User.findOne({ where: query });
+  return result;
+};
+
 export {
+  findUser,
   getUserById,
   createUser,
   updateUser,
