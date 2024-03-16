@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 import { getToken } from '../utils/jwt';
+import modelFieldStripper from '../utils/modelFieldStripper';
 
 // model
 import passport from './config/passport';
@@ -35,7 +36,7 @@ export const loginMiddleware = (req, res, next) => {
         });
 
         res.locals.token = token;
-        res.locals.user = user.dataValues;
+        res.locals.user = modelFieldStripper(user, 'user');
         res.locals.message = 'Login successfull.';
       },
     );
@@ -62,8 +63,8 @@ export const jwtMiddleware = (req, res, next) => {
       return next();
     }
 
-    res.locals.user = user;
-    req.user = user;
+    res.locals.user = modelFieldStripper(user, 'user');
+    // req.user = modelFieldStripper(user, 'user');;
     next();
   })(req, res, next);
 };

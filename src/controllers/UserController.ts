@@ -1,5 +1,6 @@
 // models
 import User from '../models/user';
+import Profile from '../models/profile';
 
 // utils
 import controllerHandler from '../utils/controllerHandler';
@@ -14,10 +15,21 @@ const createUser = controllerHandler(async (req) => {
     },
   });
 
-  const token = getToken({
-    id: user.getDataValue('id'),
-    email: user.getDataValue('email'),
-  });
+  if (created) {
+    await Profile.create({
+      userId: user.getDataValue('id'),
+      ...req.body,
+    });
+  }
+
+  return {
+    created,
+    user,
+  };
+});
+
+const registerUser = controllerHandler(async (req, res) => {
+  const { created, user } = await createUser(req, res);
 
   if (!created) {
     return {
@@ -25,6 +37,11 @@ const createUser = controllerHandler(async (req) => {
       message: 'Email already registered.',
     };
   }
+
+  const token = getToken({
+    id: user.getDataValue('id'),
+    email: user.getDataValue('email'),
+  });
 
   return {
     created,
@@ -61,6 +78,7 @@ const findUser = async (query) => {
 };
 
 export {
+  registerUser,
   findUser,
   getUserById,
   createUser,

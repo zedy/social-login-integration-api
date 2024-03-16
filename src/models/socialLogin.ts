@@ -1,8 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/db-connection';
-import { hashString } from '../utils/passHash';
 
-const User = sequelize.define('User', {
+const SocialLogin = sequelize.define('SocialLogin', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -10,18 +9,18 @@ const User = sequelize.define('User', {
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
       isEmail: true,
     },
   },
-  salt: {
+  provider: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  password: {
+  providerId: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   timestamps: true,
@@ -33,12 +32,4 @@ const User = sequelize.define('User', {
   ],
 });
 
-// schema hook which will fire prior to user creation
-User.beforeCreate((user) => {
-  const hashedValues = hashString(user.getDataValue('password'));
-
-  user.setDataValue('salt', hashedValues.salt);
-  user.setDataValue('password', hashedValues.hash);
-});
-
-export default User;
+export default SocialLogin;

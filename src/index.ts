@@ -12,6 +12,8 @@ import morgan from 'morgan';
 
 // models
 import UserModel from './models/user';
+import SocialLogin from './models/socialLogin';
+import Profile from './models/profile';
 
 // routes
 import userRoute from './routes/user';
@@ -77,8 +79,15 @@ app.use(express.urlencoded({ extended: false, limit: '100000mb' }));
 app.set('trust proxy', 1);
 // app.use(passport.initialize());
 
-// List of all models
-UserModel.sync();
+// List of all models and their associations
+Profile.belongsTo(UserModel, { foreignKey: 'userId' });
+UserModel.hasOne(Profile, { foreignKey: 'userId' });
+Profile.belongsTo(SocialLogin, { foreignKey: 'socialLoginId' });
+SocialLogin.hasOne(Profile, { foreignKey: 'socialLoginId' });
+// -----
+UserModel.sync({ alter: true });
+SocialLogin.sync({ alter: true });
+Profile.sync({ alter: true });
 
 // List of all API routes
 // User routes
