@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import { getToken } from '../utils/jwt';
-import modelFieldStripper from '../utils/modelFieldStripper';
+import modelFieldStripper from '../utils/modelParser';
 
 // model
 import passport from './config/passport';

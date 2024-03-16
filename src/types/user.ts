@@ -13,4 +13,5 @@ export interface UserType extends Model {
 export type JWTPayload = {
   id: number;
   email: string;
+  providerId?: string;
 };

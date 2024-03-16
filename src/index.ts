@@ -18,6 +18,7 @@ import Profile from './models/profile';
 // routes
 import userRoute from './routes/user';
 import authRoute from './routes/authentication';
+import socialLoginRoute from './routes/socialLogin';
 
 // Initialize Express
 const app = express();
@@ -80,14 +81,14 @@ app.set('trust proxy', 1);
 // app.use(passport.initialize());
 
 // List of all models and their associations
+UserModel.hasOne(Profile, { foreignKey: 'userId', onDelete: 'CASCADE', as: 'userProfile' });
 Profile.belongsTo(UserModel, { foreignKey: 'userId' });
-UserModel.hasOne(Profile, { foreignKey: 'userId' });
+SocialLogin.hasOne(Profile, { foreignKey: 'socialLoginId', onDelete: 'CASCADE', as: 'socialProfile' });
 Profile.belongsTo(SocialLogin, { foreignKey: 'socialLoginId' });
-SocialLogin.hasOne(Profile, { foreignKey: 'socialLoginId' });
 // -----
-UserModel.sync({ alter: true });
-SocialLogin.sync({ alter: true });
-Profile.sync({ alter: true });
+UserModel.sync();
+SocialLogin.sync();
+Profile.sync();
 
 // List of all API routes
 // User routes
@@ -95,6 +96,9 @@ app.use('/api/user', userRoute);
 
 // Auth routes
 app.use('/api/auth', authRoute);
+
+// Social Login routes
+app.use('/api/social-login', socialLoginRoute);
 
 // Start WebSocket
 const server = http.createServer(app);
