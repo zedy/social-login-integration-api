@@ -5,8 +5,12 @@ import Profile from '../models/profile';
 // utils
 import controllerHandler from '../utils/controllerHandler';
 import { getToken } from '../utils/jwt';
+import modelFieldStripper from '../utils/modelFieldStripper';
 
 const createUser = controllerHandler(async (req) => {
+  let profile;
+
+  // step 1: create user
   const [user, created] = await User.findOrCreate({
     where: { email: req.body.email },
     defaults: {
@@ -15,8 +19,9 @@ const createUser = controllerHandler(async (req) => {
     },
   });
 
+  // step 2: create profile if user is created
   if (created) {
-    await Profile.create({
+    profile = await Profile.create({
       userId: user.getDataValue('id'),
       ...req.body,
     });
@@ -24,13 +29,15 @@ const createUser = controllerHandler(async (req) => {
 
   return {
     created,
+    profile,
     user,
   };
 });
 
 const registerUser = controllerHandler(async (req, res) => {
-  const { created, user } = await createUser(req, res);
+  const { created, profile, user } = await createUser(req, res);
 
+  // if user is not created, return warning message
   if (!created) {
     return {
       created,
@@ -38,16 +45,24 @@ const registerUser = controllerHandler(async (req, res) => {
     };
   }
 
+  // step 1: strip all sensitive data from user object and profile object
+  const stippedUser = modelFieldStripper(user, 'user');
+  const strippedProfile = modelFieldStripper(profile, 'profile');
+
+  // step 2: attach profile to user
+  stippedUser.profile = strippedProfile;
+
+  // step 3: create token
   const token = getToken({
-    id: user.getDataValue('id'),
-    email: user.getDataValue('email'),
+    id: stippedUser.id,
+    email: stippedUser.email,
   });
 
   return {
     created,
     message: 'User created successfully.',
     token,
-    user,
+    user: stippedUser,
   };
 });
 

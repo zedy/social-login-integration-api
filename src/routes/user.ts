@@ -7,14 +7,14 @@ import createRouteHandler from '../utils/routeHandler';
 // controllers
 import {
   updateUser,
-  createUser,
+  registerUser,
   deleteUserById,
   getUserById,
 } from '../controllers/UserController';
 
 const userRoute = Router();
 
-userRoute.post('/create', createRouteHandler(createUser));
+userRoute.post('/create', createRouteHandler(registerUser));
 userRoute.put('/update/:id', createRouteHandler(updateUser));
 userRoute.get('/:id', createRouteHandler(getUserById));
 userRoute.delete('/:id', createRouteHandler(deleteUserById));
