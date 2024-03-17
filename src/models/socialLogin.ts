@@ -10,9 +10,7 @@ const SocialLogin = sequelize.define('SocialLogin', {
   email: {
     type: DataTypes.STRING,
     allowNull: true,
-    validate: {
-      isEmail: true,
-    },
+    unique: false,
   },
   provider: {
     type: DataTypes.STRING,
@@ -26,7 +24,6 @@ const SocialLogin = sequelize.define('SocialLogin', {
   timestamps: true,
   indexes: [
     {
-      unique: true,
       fields: ['email'],
     },
   ],

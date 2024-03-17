@@ -25,13 +25,14 @@ import { createProfile } from './ProfileController';
  *
  */
 const startLoginProceess = controllerHandler(async (req) => {
-  const { email, providerId } = req.body;
+  const { email, provider, providerId } = req.body;
   let profile;
 
   // step 1: create or find social login aka "user"
   const [socialLogin, created] = await SocialLogin.findOrCreate({
     where: {
       [Op.or]: [{ email }, { providerId }],
+      provider,
     },
     include: [
       {
@@ -69,7 +70,6 @@ const startLoginProceess = controllerHandler(async (req) => {
   });
 
   return {
-    created,
     message: 'Login successful.',
     token,
     user: parsedUser,
