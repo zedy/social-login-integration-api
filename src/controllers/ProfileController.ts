@@ -15,8 +15,11 @@ const createProfile = async (payload) => {
 const updateProfile = controllerHandler(async (req) => {
   const { id } = req.params;
 
-  const result = await Profile.update(id, req.body);
-  return result;
+  await Profile.update({ ...req.body }, { where: { id } });
+
+  return {
+    message: 'Profile updated successfully',
+  };
 });
 
 export {

@@ -19,6 +19,7 @@ import Profile from './models/profile';
 import userRoute from './routes/user';
 import authRoute from './routes/authentication';
 import socialLoginRoute from './routes/socialLogin';
+import profileRoute from './routes/profile';
 
 // Initialize Express
 const app = express();
@@ -99,6 +100,9 @@ app.use('/api/auth', authRoute);
 
 // Social Login routes
 app.use('/api/social-login', socialLoginRoute);
+
+// Profile routes
+app.use('/api/profile', profileRoute);
 
 // Start WebSocket
 const server = http.createServer(app);
