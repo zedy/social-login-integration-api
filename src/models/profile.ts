@@ -9,23 +9,28 @@ const Profile = sequelize.define('Profile', {
   },
   bio: {
     type: DataTypes.STRING(1000),
-    allowNull: true,
+    allowNull: false,
+    defaultValue: '',
+  },
+  phoneNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: '',
   },
   address: {
     type: DataTypes.STRING,
-    allowNull: true,
-  },
-  phone: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
+    defaultValue: '',
   },
   firstname: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
+    defaultValue: '',
   },
   lastname: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
+    defaultValue: '',
   },
   userId: {
     type: DataTypes.INTEGER,
@@ -43,11 +48,13 @@ const Profile = sequelize.define('Profile', {
   },
   company: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
+    defaultValue: '',
   },
   profilePicture: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
+    defaultValue: '',
   },
 }, {
   timestamps: true,
