@@ -66,6 +66,7 @@ const startLoginProceess = controllerHandler(async (req) => {
   const token = getToken({
     id: parsedUser.id,
     email: parsedUser.email,
+    isSocial: true,
     providerId: parsedUser.providerId,
   });
 
@@ -74,6 +75,13 @@ const startLoginProceess = controllerHandler(async (req) => {
     token,
     user: parsedUser,
   };
+});
+
+const getSocialLoginById = controllerHandler(async (req) => {
+  const { id } = req.params;
+
+  const result = await SocialLogin.findByPk(id);
+  return result;
 });
 
 const createSocialLogin = controllerHandler(async (req) => {
@@ -97,4 +105,5 @@ export {
   startLoginProceess,
   createSocialLogin,
   deleteSocialLoginById,
+  getSocialLoginById,
 };

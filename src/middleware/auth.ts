@@ -33,6 +33,7 @@ export const loginMiddleware = (req, res, next) => {
         const token = getToken({
           email: user.email,
           id: user.id,
+          isSocial: false,
         });
 
         res.locals.token = token;
@@ -55,16 +56,10 @@ export const loginMiddleware = (req, res, next) => {
 export const jwtMiddleware = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err) return next(err);
-
-    if (!user) {
-      res.locals.user = null;
-      res.locals.message = 'Token is invalid or expired. Please login again.';
-
-      return next();
-    }
+    if (!user) return res.status(401).json({ message: 'Unauthorized Access!' });
 
     res.locals.user = modelFieldStripper(user, 'user');
-    // req.user = modelFieldStripper(user, 'user');;
+    req.user = user;
     next();
   })(req, res, next);
 };

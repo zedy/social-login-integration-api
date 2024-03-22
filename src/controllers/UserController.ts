@@ -57,6 +57,7 @@ const registerUser = controllerHandler(async (req, res) => {
   // step 3: create token
   const token = getToken({
     id: parsedUser.id,
+    isSocial: false,
     email: parsedUser.email,
   });
 

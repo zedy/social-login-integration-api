@@ -14,4 +14,5 @@ export type JWTPayload = {
   id: number;
   email: string;
   providerId?: string;
+  isSocial?: boolean;
 };

@@ -10,6 +10,9 @@ import responseTime from 'response-time';
 import 'dotenv/config';
 import morgan from 'morgan';
 
+// configs
+import passport from './middleware/config/passport';
+
 // models
 import UserModel from './models/user';
 import SocialLogin from './models/socialLogin';
@@ -79,7 +82,7 @@ app.use(express.urlencoded({ extended: false, limit: '100000mb' }));
 
 // Initialize authentication middleware
 app.set('trust proxy', 1);
-// app.use(passport.initialize());
+app.use(passport.initialize());
 
 // List of all models and their associations
 UserModel.hasOne(Profile, { foreignKey: 'userId', onDelete: 'CASCADE', as: 'userProfile' });

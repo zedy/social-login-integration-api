@@ -8,7 +8,9 @@ import { Strategy as LocalStrategy } from 'passport-local';
 // utils
 import { checkHashEquality } from '../../utils/passHash';
 import logger from '../../utils/helpers/errorLogger';
-import { findUser, getUserById } from '../../controllers/UserController';
+import { findUser } from '../../controllers/UserController';
+import SocialLogin from '../../models/socialLogin';
+import User from '../../models/user';
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -38,7 +40,8 @@ passport.use('local', new LocalStrategy({
 // Strategy for auth based on JWT
 passport.use('jwt', new Strategy(opts, async (jwtPayload, done) => {
   try {
-    const user = await getUserById(jwtPayload.user.accountId, null);
+    const model = jwtPayload.user.isSocial ? SocialLogin : User;
+    const user = await model.findByPk(jwtPayload.user.id);
 
     if (!user) {
       return done(null, false, { message: 'User not found' });
