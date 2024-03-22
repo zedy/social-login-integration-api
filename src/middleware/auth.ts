@@ -1,9 +1,14 @@
 /* eslint-disable consistent-return */
+// libs
+import queryString from 'querystring';
+
+// utils
 import { getToken } from '../utils/jwt';
 import modelFieldStripper from '../utils/modelParser';
 
 // model
 import passport from './config/passport';
+import { validateHmac } from '../utils/hmac';
 
 /**
  * This middleware is used to login the user based off
@@ -62,6 +67,36 @@ export const jwtMiddleware = (req, res, next) => {
     req.user = user;
     next();
   })(req, res, next);
+};
+
+/**
+ * A custom middleware based on HMAC validation.
+ * This middleware is used to validate the HMAC signature
+ * that is sent in the query params of the request from
+ * the client.
+ *
+ * Client will generate a HMAC signature based on the
+ * query params and send it in the request. This middleware
+ * will validate the HMAC signature and allow the request
+ * to pass through if the signature is valid.
+ */
+export const hmacMiddleware = (req, res, next) => {
+  const { query } = req;
+
+  if (query) {
+    const {
+      hmac, host, timestamp, session,
+    } = query;
+    const params = {
+      host, session, timestamp,
+    };
+
+    if (validateHmac(hmac, params)) return next();
+
+    return res.status(401).json({ message: 'Unauthorized Access!' });
+  }
+
+  return res.status(401).json({ message: 'Unauthorized Access!' });
 };
 
 export type Session = [any, any];
