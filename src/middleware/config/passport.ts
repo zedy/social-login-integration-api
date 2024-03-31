@@ -9,6 +9,8 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { checkHashEquality } from '../../utils/passHash';
 import logger from '../../utils/helpers/errorLogger';
 import { findUser } from '../../controllers/UserController';
+
+// models
 import SocialLogin from '../../models/socialLogin';
 import User from '../../models/user';
 

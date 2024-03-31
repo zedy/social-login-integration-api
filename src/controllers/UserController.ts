@@ -1,4 +1,5 @@
 // models
+import Profile from '../models/profile';
 import User from '../models/user';
 
 // utils
@@ -91,8 +92,17 @@ const deleteUserById = controllerHandler(async (req) => {
 });
 
 const findUser = async (query) => {
-  const result = await User.findOne({ where: query });
-  return result;
+  const user = await User.findOne({
+    where: query,
+    include: [
+      {
+        model: Profile,
+        as: 'userProfile',
+      },
+    ],
+  });
+
+  return user;
 };
 
 export {

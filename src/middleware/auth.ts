@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 // utils
 import { getToken } from '../utils/jwt';
-import modelFieldStripper from '../utils/modelParser';
+import parseModelData from '../utils/modelParser';
 
 // model
 import passport from './config/passport';
@@ -39,7 +39,7 @@ export const loginMiddleware = (req, res, next) => {
         });
 
         res.locals.token = token;
-        res.locals.user = modelFieldStripper(user, 'user');
+        res.locals.user = parseModelData(user, 'user');
         res.locals.message = 'Login successfull.';
       },
     );
@@ -60,7 +60,7 @@ export const jwtMiddleware = (req, res, next) => {
     if (err) return next(err);
     if (!user) return res.status(401).json({ message: 'Unauthorized Access!' });
 
-    res.locals.user = modelFieldStripper(user, 'user');
+    res.locals.user = parseModelData(user, 'user');
     req.user = user;
     next();
   })(req, res, next);
