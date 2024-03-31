@@ -1,7 +1,4 @@
 /* eslint-disable consistent-return */
-// libs
-import queryString from 'querystring';
-
 // utils
 import { getToken } from '../utils/jwt';
 import modelFieldStripper from '../utils/modelParser';

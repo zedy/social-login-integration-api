@@ -12,6 +12,7 @@ import morgan from 'morgan';
 
 // configs
 import passport from './middleware/config/passport';
+import limiter from './middleware/rateLimiter';
 
 // models
 import UserModel from './models/user';
@@ -38,6 +39,9 @@ if (process.env.ENV === 'DEV') {
   app.use(morgan('dev'));
 }
 
+// Apply the rate limiting middleware to all requests.
+// app.use(limiter);
+
 // Parse the body payload
 app.use(express.json());
 
@@ -55,12 +59,6 @@ const whitelist = [
 const corsMiddlewareOptions = {
   credentials: true,
   origin: (origin, callback) => {
-    console.log('Request from:', origin);
-    if (!origin) {
-      callback(null, true);
-      return;
-    }
-
     if (whitelist.includes(origin)) {
       callback(null, true);
     } else {
@@ -138,6 +136,11 @@ const interval = setInterval(() => {
 
 wss.on('close', () => {
   clearInterval(interval);
+});
+
+// test
+app.use('/', async (req, res) => {
+  res.json({ message: 'Test' });
 });
 
 // Start the server

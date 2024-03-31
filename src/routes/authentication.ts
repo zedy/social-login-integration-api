@@ -10,7 +10,7 @@ const authRoute = Router();
 
 authRoute.post('/login', loginMiddleware, createRouteHandler(loginUserWithCredentials));
 authRoute.post('/user', jwtMiddleware, createRouteHandler(loginUserWithCredentials));
-authRoute.post('/test', createRouteHandler(async (req, res) => {
+authRoute.get('/test', createRouteHandler(async (req, res) => {
   res.json({ message: 'Test route' });
 }));
 
