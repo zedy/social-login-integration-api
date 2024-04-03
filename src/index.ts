@@ -59,7 +59,7 @@ const whitelist = [
 const corsMiddlewareOptions = {
   credentials: true,
   origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
+    if (whitelist.includes(origin) || (process.env.ENV === 'DEV' && !origin)) {
       callback(null, true);
     } else {
       const msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
